@@ -61,13 +61,20 @@ public class Game {
         state = 1;
         timeSinceLast = 0;
         int n = 0;
+
+        int t0 = (int) Math.floor(world.getPlayers().size() / 2.0f);
+        int t1 = (int) Math.ceil(world.getPlayers().size() / 2.0f);
         for(Player player : world.getPlayers()) {
-            player.getPersistentDataContainer().set(playerTeam, PersistentDataType.INTEGER, n % 2);
-            Location loc = new Location(world, Math.cos(2 * Math.PI * ((n + 1) % 2) / 2) * 30, 1, Math.sin(2 * Math.PI * ((n + 1) % 2) / 2) * 30);
+            int team = Math.random() < (double) t0 / (t0 + t1) ? 0 : 1;
+            int teamLoc = (team + 1) % 2;
+            if(team == 0) t0--;
+            else t1--;
+            player.getPersistentDataContainer().set(playerTeam, PersistentDataType.INTEGER, team);
+            Location loc = new Location(world, Math.cos(2 * Math.PI * (teamLoc % 2) / 2) * 30, 1, Math.sin(2 * Math.PI * (teamLoc % 2) / 2) * 30);
             player.teleport(loc);
             player.setRespawnLocation(loc, true);
             player.setHealth(20);
-            setInventory(n % 2, player);
+            setInventory(team, player);
             player.sendMessage("game start!");
             n++;
         }
@@ -115,7 +122,11 @@ public class Game {
         }
         int finalMaxTeam = maxTeam;
         world.getPlayers().forEach(player -> {
-            player.sendTitle(finalMaxTeam == 0 ? "Red team wins!" : "Blue team wins!", "", 10, 80, 10);
+            player.sendTitle(teams[0] == teams[1]
+                    ? "It's a tie!"
+                    : finalMaxTeam == 0
+                    ? "Red team wins!"
+                    : "Blue team wins!", "", 10, 80, 10);
         });
         state = 2;
     }
