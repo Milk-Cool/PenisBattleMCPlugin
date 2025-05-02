@@ -8,3 +8,7 @@ commands:
     description: Starts a PenisBattle game
     usage: /<command>
     permission: penisbattle.play
+  pbadm_start:
+    description: Force-starts all PenisBattle games
+    usage: /<command>
+    permission: penisbattle.start_all

@@ -183,16 +183,27 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof Player)) return false;
         Player player = (Player) sender;
-        for(Game game : games) {
-            if(game.getState() == 0
-                    && game.getWorld().getPlayers().size() < maxPlayers) {
+
+        switch(command.getName()) {
+            case "play":
+                for(Game game : games) {
+                    if(game.getState() == 0
+                            && game.getWorld().getPlayers().size() < maxPlayers) {
+                        game.addPlayer(player);
+                        return true;
+                    }
+                }
+                Game game = new Game(new WorldCreator("penis_" + random.nextLong()).environment(World.Environment.NORMAL).generator(new MapGenerator()).createWorld(), this);
                 game.addPlayer(player);
-                return true;
-            }
+                games.add(game);
+                break;
+            case "pbadm_start":
+                for(Game game2 : games) {
+                    if(game2.getState() == 0)
+                        game2.startGame();
+                }
+                break;
         }
-        Game game = new Game(new WorldCreator("penis_" + random.nextLong()).environment(World.Environment.NORMAL).generator(new MapGenerator()).createWorld(), this);
-        game.addPlayer(player);
-        games.add(game);
 
         return true;
     }
