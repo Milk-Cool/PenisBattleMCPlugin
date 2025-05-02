@@ -1,0 +1,10 @@
+name: PenisBattleMC
+version: '0.1-SNAPSHOT'
+main: com.milkcool.penisBattleMC.PenisBattleMC
+api-version: '1.21'
+load: STARTUP
+commands:
+  play:
+    description: Starts a PenisBattle game
+    usage: /<command>
+    permission: penisbattle.play
