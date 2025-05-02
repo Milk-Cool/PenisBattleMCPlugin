@@ -16,6 +16,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +42,18 @@ public class Game {
         this.world.getPersistentDataContainer().set(teamPoints, PersistentDataType.INTEGER_ARRAY, defaultScores);
         this.plugin = plugin;
 
+        int[] pos = new int[2 * 2];
+        for(int i = 0; i < 2; i++) {
+            pos[i * 2] = (int)getX(i);
+            pos[i * 2 + 1] = (int)getZ(i);
+
+            for(int x = -2; x <= 2; x++)
+                for(int z = -2; z <= 2; z++)
+                    if(x == -2 || x == 2 || z == -2 || z == 2)
+                        this.world.getBlockAt(pos[i * 2] + x, 0, pos[i * 2 + 1] + z).setType(Material.WHITE_TERRACOTTA);
+        }
+        this.world.getPersistentDataContainer().set(teamSpawnLocations, PersistentDataType.INTEGER_ARRAY, pos);
+
         runnable = new BukkitRunnable() {
             @Override
             public void run() {
@@ -57,10 +70,16 @@ public class Game {
         return world;
     }
 
+    private double getX(int teamLoc) {
+        return Math.cos(2 * Math.PI * (teamLoc % 2) / 2) * 20;
+    }
+    private double getZ(int teamLoc) {
+        return Math.sin(2 * Math.PI * (teamLoc % 2) / 2) * 20;
+    }
+
     void startGame() {
         state = 1;
         timeSinceLast = 0;
-        int n = 0;
 
         int t0 = (int) Math.floor(world.getPlayers().size() / 2.0f);
         int t1 = (int) Math.ceil(world.getPlayers().size() / 2.0f);
@@ -70,13 +89,12 @@ public class Game {
             if(team == 0) t0--;
             else t1--;
             player.getPersistentDataContainer().set(playerTeam, PersistentDataType.INTEGER, team);
-            Location loc = new Location(world, Math.cos(2 * Math.PI * (teamLoc % 2) / 2) * 30, 1, Math.sin(2 * Math.PI * (teamLoc % 2) / 2) * 30);
+            Location loc = new Location(world, getX(teamLoc), 1, getZ(teamLoc));
             player.teleport(loc);
             player.setRespawnLocation(loc, true);
             player.setHealth(20);
             setInventory(team, player);
             player.sendMessage("game start!");
-            n++;
         }
     }
 

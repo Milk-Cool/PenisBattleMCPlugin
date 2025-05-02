@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class Constants {
     public static final NamespacedKey playerTeam = new NamespacedKey("penisbattle", "team");
     public static final NamespacedKey teamPoints = new NamespacedKey("penisbattle", "points");
+    public static final NamespacedKey teamSpawnLocations = new NamespacedKey("penisbattle", "spawns");
     public static final Material[] woolColors = {
             Material.BLACK_WOOL,
             Material.BLUE_WOOL,

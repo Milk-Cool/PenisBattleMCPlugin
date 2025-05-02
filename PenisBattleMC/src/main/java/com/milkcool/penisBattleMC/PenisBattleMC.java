@@ -56,6 +56,15 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         Block head = event.getBlock();
         Integer team = event.getPlayer().getPersistentDataContainer().get(playerTeam, PersistentDataType.INTEGER);
         if(team == null) return;
+        World world = event.getPlayer().getWorld();
+        int[] teamLocations = world.getPersistentDataContainer().get(teamSpawnLocations, PersistentDataType.INTEGER_ARRAY);
+        assert teamLocations != null;
+        for(int i = 0; i < teamLocations.length; i += 2)
+            if(Math.abs(event.getBlock().getX() - teamLocations[i]) <= 2 && Math.abs(event.getBlock().getZ() - teamLocations[i + 1]) <= 2) {
+                event.setCancelled(true);
+                event.getPlayer().sendMessage("You can't place blocks here!");
+            }
+
         Material teamWool = getTeamWool(team);
         PenisChecker checker = new PenisChecker(head);
         if(checker.checkDoubleAny(teamWool) != null) {
