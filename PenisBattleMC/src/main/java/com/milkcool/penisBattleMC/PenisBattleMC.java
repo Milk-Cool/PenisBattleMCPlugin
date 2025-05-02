@@ -79,8 +79,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         World world = player.getWorld();
+        String msg = event.getDeathMessage();
         for(Player p : world.getPlayers()) {
-            String msg = event.getDeathMessage();
             p.sendMessage(msg == null ? player.getName() + " died" : msg);
         }
         event.setDeathMessage(null);
