@@ -164,6 +164,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
                 event.setCancelled(true);
                 event.getItem().remove();
                 player.getInventory().addItem(new ItemStack(getTeamWool(team), event.getItem().getItemStack().getAmount()));
+                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 0.25F, 1.0F);
                 break;
             }
     }
