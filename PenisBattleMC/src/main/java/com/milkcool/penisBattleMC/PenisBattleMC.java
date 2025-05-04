@@ -52,6 +52,10 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
     @EventHandler
     public void onBlockPlaced(BlockPlaceEvent event) {
+        if(event.getPlayer().getWorld().getName().equals("world")) {
+            event.setCancelled(true);
+            return;
+        }
         if(!event.getPlayer().getWorld().getName().startsWith("penis_")) return;
         Block head = event.getBlock();
         Integer team = event.getPlayer().getPersistentDataContainer().get(playerTeam, PersistentDataType.INTEGER);
@@ -97,6 +101,10 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        if(event.getPlayer().getWorld().getName().equals("world")) {
+            event.setCancelled(true);
+            return;
+        }
         if(!event.getPlayer().getWorld().getName().startsWith("penis_")) return;
         Block block = event.getBlock();
         if(!Arrays.stream(woolColors).toList().contains(block.getType())) {
