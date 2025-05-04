@@ -84,6 +84,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         scores[team]++;
         worldContainer.set(teamPoints, PersistentDataType.INTEGER_ARRAY, scores);
         event.getPlayer().sendMessage("penis detected! (+1)");
+        event.getPlayer().giveExp(10);
 
         event.getPlayer().getWorld().spawnParticle(Particle.END_ROD, penisHead.getLocation().add(0.5, 2.5, 0.5), 33, 0.1, 3, 0.1, 0.1);
     }
@@ -127,6 +128,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         scores[team]++;
         worldContainer.set(teamPoints, PersistentDataType.INTEGER_ARRAY, scores);
         event.getPlayer().sendMessage("penis destroyed! (+1)");
+        event.getPlayer().giveExp(10);
     }
 
     @EventHandler
