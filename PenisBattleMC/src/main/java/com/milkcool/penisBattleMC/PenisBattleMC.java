@@ -52,7 +52,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
     @EventHandler
     public void onBlockPlaced(BlockPlaceEvent event) {
-        if(event.getPlayer().getWorld().getName().equals("world")) {
+        if(event.getPlayer().getWorld().getName().equals("world") && event.getPlayer().getGameMode() != GameMode.CREATIVE) {
             event.setCancelled(true);
             return;
         }
@@ -102,7 +102,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        if(event.getPlayer().getWorld().getName().equals("world")) {
+        if(event.getPlayer().getWorld().getName().equals("world") && event.getPlayer().getGameMode() != GameMode.CREATIVE) {
             event.setCancelled(true);
             return;
         }
