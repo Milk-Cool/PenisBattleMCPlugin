@@ -12,3 +12,6 @@ commands:
     description: Force-starts all PenisBattle games
     usage: /<command>
     permission: penisbattle.start_all
+permissions:
+  penisbattle.play:
+    default: true
