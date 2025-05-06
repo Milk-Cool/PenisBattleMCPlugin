@@ -109,6 +109,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         container.set(ballsPresent, PersistentDataType.BOOLEAN, false);
 
         player.sendMessage("Balls cut off! (+1)");
+        ((Player) event.getRightClicked()).sendMessage("Your balls were cut off!");
     }
 
     @EventHandler
