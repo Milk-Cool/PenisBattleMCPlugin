@@ -171,8 +171,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
         event.setCancelled(true);
+        Integer team = event.getPlayer().getPersistentDataContainer().get(playerTeam, PersistentDataType.INTEGER);
         for(Player player : event.getPlayer().getWorld().getPlayers()) {
-            Integer team = player.getPersistentDataContainer().get(playerTeam, PersistentDataType.INTEGER);
             player.spigot().sendMessage(new ComponentBuilder("<")
                     .append(event.getPlayer().getName()).color((team == null
                                             ? ChatColor.WHITE
