@@ -71,8 +71,6 @@ public class PenisChecker {
     Block checkDoubleHead(Material woolColor) {
         boolean head = checkHead(woolColor) != null;
         if(!head) return null;
-        System.out.println(block.getRelative(-1, -2, 0).getType() == woolColor);
-        System.out.println(block.getRelative(-2, -2, 0).getType() == woolColor);
 
         if(
                 block.getRelative(-1, -2, 0).getType() == woolColor && block.getRelative(0, -2, -1).getType() == woolColor

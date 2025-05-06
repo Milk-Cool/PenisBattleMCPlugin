@@ -17,6 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -87,6 +88,27 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         event.getPlayer().giveExp(10);
 
         event.getPlayer().getWorld().spawnParticle(Particle.END_ROD, penisHead.getLocation().add(0.5, 2.5, 0.5), 33, 0.1, 3, 0.1, 0.1);
+    }
+
+    @EventHandler
+    public void onCut(PlayerInteractEntityEvent event) {
+        if(!(event.getRightClicked() instanceof Player)) return;
+        PersistentDataContainer container = event.getRightClicked().getPersistentDataContainer();
+        if(!Objects.equals(container.get(ballsPresent, PersistentDataType.BOOLEAN), true)) return;
+        Player player = event.getPlayer();
+        ItemStack stack = player.getInventory().getItem(EquipmentSlot.HAND);
+        if(stack == null || stack.getType() != Material.SHEARS) return;
+        Integer team = player.getPersistentDataContainer().get(playerTeam, PersistentDataType.INTEGER);
+        if(team == null) return;
+
+        PersistentDataContainer worldContainer = event.getPlayer().getWorld().getPersistentDataContainer();
+        int[] scores = worldContainer.get(teamPoints, PersistentDataType.INTEGER_ARRAY);
+        if(scores == null) return;
+        scores[team]++;
+        worldContainer.set(teamPoints, PersistentDataType.INTEGER_ARRAY, scores);
+        container.set(ballsPresent, PersistentDataType.BOOLEAN, false);
+
+        player.sendMessage("Balls cut off! (+1)");
     }
 
     @EventHandler

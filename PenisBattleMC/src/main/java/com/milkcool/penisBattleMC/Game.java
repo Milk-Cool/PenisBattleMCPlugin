@@ -93,6 +93,7 @@ public class Game {
             player.teleport(loc);
             player.setRespawnLocation(loc, true);
             player.setHealth(20);
+            player.getPersistentDataContainer().set(ballsPresent, PersistentDataType.BOOLEAN, true);
             setInventory(team, player);
             player.sendMessage("game start!");
         }
