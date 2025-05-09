@@ -100,6 +100,11 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         }
         Block penisBase = checker.checkAny(teamWool);
         if(penisBase == null) return;
+        if(new PenisChecker(penisBase).checkDoubleBase(teamWool) != null) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(getConfig().getString("msg_invalid_blocks"));
+            return;
+        }
         PersistentDataContainer worldContainer = event.getPlayer().getWorld().getPersistentDataContainer();
         int[] scores = worldContainer.get(teamPoints, PersistentDataType.INTEGER_ARRAY);
         if(scores == null) return;
