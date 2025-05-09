@@ -1,9 +1,17 @@
 import mineflayer from "mineflayer";
 import pathfinderMod from "mineflayer-pathfinder";
 import { Vec3 } from "vec3";
+import { parseArgs } from "util";
 const { pathfinder, Movements, goals } = pathfinderMod;
+
+const { values } = parseArgs({
+    options: {
+        ip: { type: "string", default: "localhost" }
+    }
+});
+
 const bot = mineflayer.createBot({
-    host: "localhost",
+    host: values.ip,
     username: "Bot01"
 });
 bot.loadPlugin(pathfinder);
