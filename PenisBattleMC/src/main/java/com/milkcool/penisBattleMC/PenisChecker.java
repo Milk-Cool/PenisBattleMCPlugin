@@ -117,6 +117,16 @@ public class PenisChecker {
         if(block.getRelative(-1, 0, 0).getType() == woolColor && block.getRelative(0, 0, -1).getType() == woolColor) return block;
         if(block.getRelative(0, 0, -1).getType() == woolColor && block.getRelative(1, 0, 0).getType() == woolColor) return block;
 
+        if(block.getRelative(1, 0, 0).getType() == woolColor && block.getRelative(1, 0, 1).getType() == woolColor) return block;
+        if(block.getRelative(1, 0, 0).getType() == woolColor && block.getRelative(1, 0, -1).getType() == woolColor) return block;
+        if(block.getRelative(-1, 0, 0).getType() == woolColor && block.getRelative(-1, 0, 1).getType() == woolColor) return block;
+        if(block.getRelative(-1, 0, 0).getType() == woolColor && block.getRelative(-1, 0, -1).getType() == woolColor) return block;
+
+        if(block.getRelative(0, 0, 1).getType() == woolColor && block.getRelative(1, 0, 1).getType() == woolColor) return block;
+        if(block.getRelative(0, 0, 1).getType() == woolColor && block.getRelative(-1, 0, 1).getType() == woolColor) return block;
+        if(block.getRelative(0, 0, -1).getType() == woolColor && block.getRelative(1, 0, -1).getType() == woolColor) return block;
+        if(block.getRelative(0, 0, -1).getType() == woolColor && block.getRelative(-1, 0, -1).getType() == woolColor) return block;
+
         int py = 1;
         while(block.getRelative(0, py, 0).getType() != Material.AIR && py < 384) {
             if(block.getRelative(1, py, 0).getType() == woolColor) return block;
