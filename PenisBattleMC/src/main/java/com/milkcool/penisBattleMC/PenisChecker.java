@@ -78,6 +78,7 @@ public class PenisChecker {
         for(Material wool : woolColors) {
             if(wool != Material.PINK_WOOL && (woolColor == null || woolColor == wool)) allowedWools.add(wool);
         }
+        if(block.getType() == Material.PINK_WOOL && !allowedWools.contains(block.getRelative(0, -1, 0).getType())) return null;
         if(!allowedWools.contains(block.getType()) && block.getType() != Material.PINK_WOOL) return null;
         Block startingBlock = null;
         for(int[] position : positionsBaseAny) {
