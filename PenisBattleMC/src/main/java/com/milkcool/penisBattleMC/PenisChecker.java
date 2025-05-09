@@ -3,6 +3,7 @@ package com.milkcool.penisBattleMC;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,13 +74,17 @@ public class PenisChecker {
 
     Block checkAny(Material woolColor) {
         penisLength = -1;
-        if(block.getType() != woolColor && block.getType() != Material.PINK_WOOL) return null;
+        ArrayList<Material> allowedWools = new ArrayList<>();
+        for(Material wool : woolColors) {
+            if(wool != Material.PINK_WOOL && (woolColor == null || woolColor == wool)) allowedWools.add(wool);
+        }
+        if(!allowedWools.contains(block.getType()) && block.getType() != Material.PINK_WOOL) return null;
         Block startingBlock = null;
         for(int[] position : positionsBaseAny) {
             Block near = block.getRelative(position[0], position[1], position[2]);
-            if(near.getType() != woolColor) continue;
+            if(!allowedWools.contains(near.getType())) continue;
             Block potential = block.getRelative(position[0], position[1] + 1, position[2]);
-            if(potential.getType() != woolColor) continue;
+            if(!allowedWools.contains(potential.getType())) continue;
             startingBlock = near;
         }
         if(startingBlock == null) {
