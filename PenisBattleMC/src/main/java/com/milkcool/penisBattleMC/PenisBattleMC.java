@@ -59,6 +59,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         config.addDefault("msg_bar_ingame", "Game ends in %n seconds");
         config.addDefault("msg_bar_red_short", "R");
         config.addDefault("msg_bar_blue_short", "B");
+        config.options().copyDefaults(true);
+        saveConfig();
 
         getServer().getPluginManager().registerEvents(this, this);
         Objects.requireNonNull(this.getCommand("play")).setExecutor(this);
