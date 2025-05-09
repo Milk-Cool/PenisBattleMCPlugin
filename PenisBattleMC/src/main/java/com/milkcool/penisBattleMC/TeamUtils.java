@@ -22,8 +22,10 @@ public class TeamUtils {
         inventory.clear();
         inventory.addItem(new ItemStack(Material.WOODEN_SWORD, 1));
         inventory.addItem(new ItemStack(Material.SHEARS, 1));
-        inventory.addItem(new ItemStack(getTeamWool(team), 40));
+        inventory.addItem(new ItemStack(getTeamWool(team), 64));
         inventory.addItem(new ItemStack(Material.PINK_WOOL, 10));
+        inventory.addItem(new ItemStack(Material.BOW, 1));
+        inventory.addItem(new ItemStack(Material.ARROW, 16));
         inventory.addItem(new ItemStack(Material.COOKED_BEEF, 16));
 
         ItemStack helmet = new ItemStack(getTeamWool(team));
