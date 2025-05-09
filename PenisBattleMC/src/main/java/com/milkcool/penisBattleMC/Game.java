@@ -95,7 +95,7 @@ public class Game {
             player.setHealth(20);
             player.getPersistentDataContainer().set(ballsPresent, PersistentDataType.BOOLEAN, true);
             setInventory(team, player);
-            player.sendMessage("game start!");
+            player.sendMessage(plugin.getConfig().getString("msg_game_start"));
         }
     }
 
@@ -142,10 +142,10 @@ public class Game {
         int finalMaxTeam = maxTeam;
         world.getPlayers().forEach(player -> {
             player.sendTitle(teams[0] == teams[1]
-                    ? "It's a tie!"
+                    ? plugin.getConfig().getString("msg_res_tie")
                     : finalMaxTeam == 0
-                    ? "Red team wins!"
-                    : "Blue team wins!", "", 10, 80, 10);
+                    ? plugin.getConfig().getString("msg_res_red")
+                    : plugin.getConfig().getString("msg_res_blue"), "", 10, 80, 10);
         });
         state = 2;
     }
@@ -156,8 +156,8 @@ public class Game {
             int playersCount = players.size();
             players.forEach(player -> {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                        playersCount < 2 ? new TextComponent("Waiting for players...")
-                        : new TextComponent("Game starting in " + (gameStart - timeSinceLast) + " seconds"));
+                        playersCount < 2 ? new TextComponent(plugin.getConfig().getString("msg_bar_wait"))
+                        : new TextComponent(plugin.getConfig().getString("msg_bar_starting_in").replaceAll("%n", Integer.toString(gameStart - timeSinceLast))));
             });
             if(playersCount < 2) {
                 timeSinceLast = 0;
@@ -173,9 +173,9 @@ public class Game {
             assert scores != null;
             players.forEach(player -> {
                 player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
-                    new ComponentBuilder("Game ends in " + (gameDuration - timeSinceLast) + " seconds")
-                            .append(" R " + scores[0]).color(ChatColor.RED)
-                            .append(" B " + scores[1]).color(ChatColor.BLUE).create()
+                    new ComponentBuilder(plugin.getConfig().getString("msg_bar_ingame").replaceAll("%n", Integer.toString(gameDuration - timeSinceLast)))
+                            .append(" " + plugin.getConfig().getString("msg_bar_red_short") + " " + scores[0]).color(ChatColor.RED)
+                            .append(" " + plugin.getConfig().getString("msg_bar_blue_short") + " " + scores[1]).color(ChatColor.BLUE).create()
                 );
             });
             if(timeSinceLast >= gameDuration) {

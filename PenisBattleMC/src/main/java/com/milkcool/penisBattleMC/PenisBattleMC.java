@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -41,6 +42,24 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
     @Override
     public void onEnable() {
+        FileConfiguration config = getConfig();
+        config.addDefault("msg_invalid_blocks", "You can't place blocks like this!");
+        config.addDefault("msg_invalid_block_location", "You can't place blocks here!");
+        config.addDefault("msg_penis_built", "Penis detected! (+%n)");
+        config.addDefault("msg_penis_destroyed", "Penis destroyed! (+%n)");
+        config.addDefault("msg_penis_self", "You can't destroy your own penises!");
+        config.addDefault("msg_balls_cut_off", "Balls cut off! (+1)");
+        config.addDefault("msg_balls_cut_off_self", "Your balls were cut off!");
+        config.addDefault("msg_game_start", "The game has started!");
+        config.addDefault("msg_res_tie", "It's a tie!");
+        config.addDefault("msg_res_red", "The red team has won!");
+        config.addDefault("msg_res_blue", "The blue team has won!");
+        config.addDefault("msg_bar_wait", "Waiting for players...");
+        config.addDefault("msg_bar_starting_in", "Starting in %n seconds");
+        config.addDefault("msg_bar_ingame", "Game ends in %n seconds");
+        config.addDefault("msg_bar_red_short", "R");
+        config.addDefault("msg_bar_blue_short", "B");
+
         getServer().getPluginManager().registerEvents(this, this);
         Objects.requireNonNull(this.getCommand("play")).setExecutor(this);
         getLogger().info("PenisBattle enabled!");
@@ -67,14 +86,14 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         for(int i = 0; i < teamLocations.length; i += 2)
             if(Math.abs(event.getBlock().getX() - teamLocations[i]) <= 2 && Math.abs(event.getBlock().getZ() - teamLocations[i + 1]) <= 2) {
                 event.setCancelled(true);
-                event.getPlayer().sendMessage("You can't place blocks here!");
+                event.getPlayer().sendMessage(getConfig().getString("msg_invalid_block_location"));
             }
 
         Material teamWool = getTeamWool(team);
         PenisChecker checker = new PenisChecker(head);
         if(checker.checkDoubleAny(teamWool) != null) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage("You can't place blocks like that!");
+            event.getPlayer().sendMessage(getConfig().getString("msg_invalid_blocks"));
             return;
         }
         Block penisBase = checker.checkAny(teamWool);
@@ -85,7 +104,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         int plus = checker.penisLength / 2;
         scores[team] += plus;
         worldContainer.set(teamPoints, PersistentDataType.INTEGER_ARRAY, scores);
-        event.getPlayer().sendMessage("penis detected! (+" + plus + ")");
+        event.getPlayer().sendMessage(getConfig().getString("msg_penis_built").replaceAll("%n", Integer.toString(plus)));
         event.getPlayer().giveExp(10);
 
         event.getPlayer().getWorld().spawnParticle(Particle.END_ROD, penisBase.getLocation().add(0.5, 2.5 + checker.penisLength, 0.5), 33, 0.1, 3, 0.1, 0.1);
@@ -109,8 +128,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         worldContainer.set(teamPoints, PersistentDataType.INTEGER_ARRAY, scores);
         container.set(ballsPresent, PersistentDataType.BOOLEAN, false);
 
-        player.sendMessage("Balls cut off! (+1)");
-        ((Player) event.getRightClicked()).sendMessage("Your balls were cut off!");
+        player.sendMessage(getConfig().getString("msg_balls_cut_off"));
+        ((Player) event.getRightClicked()).sendMessage(getConfig().getString("msg_balls_cut_off_self"));
     }
 
     @EventHandler
@@ -142,16 +161,17 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         PenisChecker checker = new PenisChecker(block);
         if(checker.checkAny(teamWool) != null) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage("You can't destroy your own penises!");
+            event.getPlayer().sendMessage(getConfig().getString("msg_penis_self"));
             return;
         }
         if(checker.checkAny(null) == null) return;
         PersistentDataContainer worldContainer = event.getPlayer().getWorld().getPersistentDataContainer();
         int[] scores = worldContainer.get(teamPoints, PersistentDataType.INTEGER_ARRAY);
         if(scores == null) return;
-        scores[team]++;
+        int plus = checker.penisLength / 2;
+        scores[team] += plus;
         worldContainer.set(teamPoints, PersistentDataType.INTEGER_ARRAY, scores);
-        event.getPlayer().sendMessage("penis destroyed! (+1)");
+        event.getPlayer().sendMessage(getConfig().getString("msg_penis_destroyed").replaceAll("%n", Integer.toString(plus)));
         event.getPlayer().giveExp(10);
     }
 
