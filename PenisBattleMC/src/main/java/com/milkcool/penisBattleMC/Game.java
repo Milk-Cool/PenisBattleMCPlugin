@@ -108,6 +108,7 @@ public class Game {
         player.setFoodLevel(20);
         player.setSaturation(20);
         player.getInventory().clear();
+        ItemUtils.setInventoryLeave(player, plugin);
     }
 
     void endGame() {
@@ -120,6 +121,7 @@ public class Game {
                     player.setRespawnLocation(loc, true);
                     player.teleport(loc);
                     player.getInventory().clear();
+                    ItemUtils.setInventoryStart(player, plugin);
                 });
 
                 Bukkit.unloadWorld(world, false);

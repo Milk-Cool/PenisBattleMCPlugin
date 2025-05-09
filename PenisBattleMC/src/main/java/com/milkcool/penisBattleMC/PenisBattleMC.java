@@ -59,6 +59,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         config.addDefault("msg_bar_ingame", "Game ends in %n seconds");
         config.addDefault("msg_bar_red_short", "R");
         config.addDefault("msg_bar_blue_short", "B");
+        config.addDefault("msg_item_join", "Join game");
+        config.addDefault("msg_item_leave", "Leave game");
         config.options().copyDefaults(true);
         saveConfig();
 
@@ -140,6 +142,28 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     }
 
     @EventHandler
+    public void onItemUse(PlayerInteractEvent event) {
+        if(event.getPlayer().getWorld().getName().equals("world")) {
+            if(event.getPlayer().getInventory().getItem(EquipmentSlot.HAND).getType() != ItemUtils.getItemStart(this).getType()) return;
+            event.setCancelled(true);
+            play(event.getPlayer());
+            return;
+        }
+
+        if(event.getPlayer().getInventory().getItem(EquipmentSlot.HAND).getType() == ItemUtils.getItemLeave(this).getType()) {
+            event.setCancelled(true);
+            Location loc = Objects.requireNonNull(Bukkit.getWorld("world")).getSpawnLocation();
+            Player player = event.getPlayer();
+            player.setGameMode(GameMode.ADVENTURE);
+            player.setRespawnLocation(loc, true);
+            player.teleport(loc);
+            player.getInventory().clear();
+            ItemUtils.setInventoryStart(player, this);
+            return;
+        }
+    }
+
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         World world = player.getWorld();
@@ -195,6 +219,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         event.getPlayer().getInventory().clear();
         event.getPlayer().setHealth(20);
         event.getPlayer().setGameMode(GameMode.ADVENTURE);
+        ItemUtils.setInventoryStart(event.getPlayer(), this);
     }
 
     @EventHandler
@@ -241,6 +266,19 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         }.runTaskLater(this, 20L);
     }
 
+    private void play(Player player) {
+        for(Game game : games) {
+            if(game.getState() == 0
+                    && game.getWorld().getPlayers().size() < maxPlayers) {
+                game.addPlayer(player);
+                return;
+            }
+        }
+        Game game = new Game(new WorldCreator("penis_" + random.nextLong()).environment(World.Environment.NORMAL).generator(new MapGenerator()).createWorld(), this);
+        game.addPlayer(player);
+        games.add(game);
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(!(sender instanceof Player)) return false;
@@ -248,16 +286,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
         switch(command.getName()) {
             case "play":
-                for(Game game : games) {
-                    if(game.getState() == 0
-                            && game.getWorld().getPlayers().size() < maxPlayers) {
-                        game.addPlayer(player);
-                        return true;
-                    }
-                }
-                Game game = new Game(new WorldCreator("penis_" + random.nextLong()).environment(World.Environment.NORMAL).generator(new MapGenerator()).createWorld(), this);
-                game.addPlayer(player);
-                games.add(game);
+                play(player);
                 break;
             case "pbadm_start":
                 for(Game game2 : games) {
