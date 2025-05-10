@@ -35,6 +35,7 @@ public class Game {
     Game(World world, JavaPlugin plugin) {
         this.world = world;
         this.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+        this.world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
         this.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         this.world.setGameRule(GameRule.DO_INSOMNIA, false);
         this.world.setGameRule(GameRule.KEEP_INVENTORY, true);
