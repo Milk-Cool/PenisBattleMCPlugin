@@ -42,6 +42,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
 
     private final Random random = new Random();
 
+    private boolean loading = false;
+
     @Override
     public void onEnable() {
         FileConfiguration config = getConfig();
@@ -63,6 +65,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         config.addDefault("msg_bar_blue_short", "B");
         config.addDefault("msg_item_join", "Join game");
         config.addDefault("msg_item_leave", "Leave game");
+        config.addDefault("msg_wait", "Wait 5s and try again");
         config.options().copyDefaults(true);
         saveConfig();
 
@@ -284,9 +287,15 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
                 return;
             }
         }
+        if(loading) {
+            player.sendMessage(getConfig().getString("msg_wait"));
+            return;
+        }
+        loading = true;
         Game game = new Game(new WorldCreator("penis_" + random.nextLong()).environment(World.Environment.NORMAL).generator(new MapGenerator()).createWorld(), this);
         game.addPlayer(player);
         games.add(game);
+        loading = false;
     }
 
     @Override
