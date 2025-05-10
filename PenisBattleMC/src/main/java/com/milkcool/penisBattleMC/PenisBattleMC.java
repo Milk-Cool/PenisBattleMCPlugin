@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.milkcool.penisBattleMC.Constants.*;
+import static com.milkcool.penisBattleMC.ItemUtils.getItemLeave;
+import static com.milkcool.penisBattleMC.ItemUtils.getItemStart;
 import static com.milkcool.penisBattleMC.TeamUtils.getTeamWool;
 
 public final class PenisBattleMC extends JavaPlugin implements Listener, CommandExecutor {
@@ -120,6 +122,14 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     }
 
     @EventHandler
+    public void onDrop(PlayerDropItemEvent event) {
+        if(event.getPlayer().getWorld().getName().equals("world") && event.getItemDrop().getItemStack().getType() == getItemStart(this).getType()
+            || !event.getPlayer().getWorld().getName().equals("world") && event.getItemDrop().getItemStack().getType() == getItemLeave(this).getType()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onCut(PlayerInteractEntityEvent event) {
         if(!(event.getRightClicked() instanceof Player)) return;
         PersistentDataContainer container = event.getRightClicked().getPersistentDataContainer();
@@ -144,7 +154,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     @EventHandler
     public void onItemUse(PlayerInteractEvent event) {
         if(event.getPlayer().getWorld().getName().equals("world")) {
-            if(event.getPlayer().getInventory().getItem(EquipmentSlot.HAND).getType() != ItemUtils.getItemStart(this).getType()) return;
+            if(event.getPlayer().getInventory().getItem(EquipmentSlot.HAND).getType() != getItemStart(this).getType()) return;
             event.setCancelled(true);
             play(event.getPlayer());
             return;
