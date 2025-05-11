@@ -6,15 +6,19 @@ const { pathfinder, Movements, goals } = pathfinderMod;
 
 const { values } = parseArgs({
     options: {
-        ip: { type: "string", default: "localhost" }
+        ip: { type: "string", default: "localhost" },
+        username: { type: "string", default: "Bot01" }
     }
 });
 
 const bot = mineflayer.createBot({
     host: values.ip,
-    username: "Bot01"
+    username: values.username
 });
 bot.loadPlugin(pathfinder);
+bot.on("kicked", msg => console.error(JSON.stringify(msg, null, 2)));
+bot.on("error", msg => console.error(msg));
+bot.on("message", msg => console.error(JSON.stringify(msg, null, 2)));
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -50,8 +54,10 @@ const place = async (pos, lookAtPos, blockNameFunc, jump = true) => {
 }
 
 bot.once("login", async () => {
-    bot.chat("/reg aA34829 aA34829");
-    bot.chat("/l aA34829");
+    await sleep(500);
+
+    bot.chat("/register aA3b4829!! aA3b4829!!");
+    bot.chat("/login aA3b4829!!");
 
     await sleep(500);
 
