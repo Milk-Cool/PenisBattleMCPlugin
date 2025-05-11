@@ -3,6 +3,15 @@
     font-family: sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+    * {
+        color: white;
+    }
+    body {
+        background: black;
+    }
+}
+
 body::before {
     background: url(/bg.png);
     opacity: 0.4;
