@@ -25,6 +25,10 @@ body::before {
     z-index: -1;
 }
 
+#title {
+    max-width: 80%;
+}
+
 body {
     padding-top: 10em;
     text-align: center;
@@ -52,6 +56,8 @@ body, body * {
 
 .point > img {
     width: 15em;
+    max-width: 40%;
+    height: auto;
     border-radius: 1em;
     margin-right: 1em;
 }
