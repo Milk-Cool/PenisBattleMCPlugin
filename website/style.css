@@ -17,7 +17,7 @@ body::before {
     opacity: 0.4;
     content: "";
     display: block;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -32,6 +32,26 @@ body {
     margin-right: auto;
 }
 body, body * {
-    word-break: break-all;
+    text-wrap: pretty;
     max-width: 40em;
+}
+
+.point {
+    display: flex;
+    flex-direction: row;
+    background: #000b;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 1em;
+    text-align: left;
+    backdrop-filter: blur(5px);
+}
+.point * {
+    color: white;
+}
+
+.point > img {
+    width: 15em;
+    border-radius: 1em;
+    margin-right: 1em;
 }
