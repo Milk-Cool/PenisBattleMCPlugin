@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -144,6 +145,9 @@ public class Game {
                                     break;
                                 }
                         }
+
+                for(Entity ent : world.getEntities())
+                    ent.remove();
             }
         }.runTaskLater(plugin, 100L);
         int[] teams = world.getPersistentDataContainer().get(teamPoints, PersistentDataType.INTEGER_ARRAY);
