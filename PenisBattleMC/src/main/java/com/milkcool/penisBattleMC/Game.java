@@ -34,12 +34,14 @@ public class Game {
 
     Game(World world, JavaPlugin plugin) {
         this.world = world;
-        this.world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-        this.world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-        this.world.setGameRule(GameRule.DO_MOB_SPAWNING, false);
-        this.world.setGameRule(GameRule.DO_INSOMNIA, false);
+        this.world.setGameRule(GameRule.ADVANCE_TIME, false);
+        this.world.setGameRule(GameRule.ADVANCE_WEATHER, false);
+        this.world.setGameRule(GameRule.SPAWN_MOBS, false);
+        this.world.setGameRule(GameRule.SPAWN_MONSTERS, false);
+        this.world.setGameRule(GameRule.SPAWN_WANDERING_TRADERS, false);
+        this.world.setGameRule(GameRule.SPAWN_PHANTOMS, false);
         this.world.setGameRule(GameRule.KEEP_INVENTORY, true);
-        this.world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+        this.world.setGameRule(GameRule.IMMEDIATE_RESPAWN, true);
         this.world.getPersistentDataContainer().set(teamPoints, PersistentDataType.INTEGER_ARRAY, defaultScores);
         this.plugin = plugin;
 
