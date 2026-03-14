@@ -14,6 +14,7 @@ public class Constants {
     public static final NamespacedKey ballsPresent = new NamespacedKey("penisbattle", "balls");
     public static final NamespacedKey teamPoints = new NamespacedKey("penisbattle", "points");
     public static final NamespacedKey teamSpawnLocations = new NamespacedKey("penisbattle", "spawns");
+    public static final NamespacedKey worldInGameFlag = new NamespacedKey("penisbattle", "ingame");
     public static final Material[] woolColors = {
             Material.BLACK_WOOL,
             Material.BLUE_WOOL,
@@ -38,4 +39,7 @@ public class Constants {
     public static final int[] defaultScores = {0, 0, 0, 0};
     public static final int gameStart = 30;
     public static final int gameDuration = 120;
+
+
+    public static final int widthChunks = 4;
 }

@@ -18,6 +18,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -39,6 +40,7 @@ import static com.milkcool.penisBattleMC.TeamUtils.getTeamWool;
 
 public final class PenisBattleMC extends JavaPlugin implements Listener, CommandExecutor {
     private List<Game> games = new ArrayList<>();
+    private WorldManager worldman = new WorldManager();
 
     private final Random random = new Random();
 
@@ -66,6 +68,8 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         config.addDefault("msg_item_join", "Join game");
         config.addDefault("msg_item_leave", "Leave game");
         config.addDefault("msg_wait", "Wait 5s and try again");
+        config.addDefault("msg_no_games", "No games available right now");
+        config.addDefault("games", 3);
         config.options().copyDefaults(true);
         saveConfig();
 
@@ -291,8 +295,13 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
             player.sendMessage(getConfig().getString("msg_wait"));
             return;
         }
+        World w = worldman.getWorld();
+        if(w == null) {
+            player.sendMessage(getConfig().getString("msg_invalid_block_location"));
+            return;
+        }
         loading = true;
-        Game game = new Game(new WorldCreator("penis_" + random.nextLong()).environment(World.Environment.NORMAL).generator(new MapGenerator()).createWorld(), this);
+        Game game = new Game(w, this);
         game.addPlayer(player);
         games.add(game);
         loading = false;
@@ -335,5 +344,10 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    @EventHandler
+    public void onServerLoad(ServerLoadEvent event) {
+        worldman.pregenerateWorlds(getConfig().getInt("games"));
     }
 }

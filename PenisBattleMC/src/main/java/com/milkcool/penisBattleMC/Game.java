@@ -6,6 +6,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -37,12 +38,13 @@ public class Game {
         this.world.setGameRule(GameRules.ADVANCE_TIME, false);
         this.world.setGameRule(GameRules.ADVANCE_WEATHER, false);
         this.world.setGameRule(GameRules.SPAWN_MOBS, false);
-        this.world.setGameRule(GameRule.SPAWN_MONSTERS, false);
+        this.world.setGameRule(GameRules.SPAWN_MONSTERS, false);
         this.world.setGameRule(GameRules.SPAWN_WANDERING_TRADERS, false);
         this.world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
-        this.world.setGameRule(GameRule.KEEP_INVENTORY, true);
+        this.world.setGameRule(GameRules.KEEP_INVENTORY, true);
         this.world.setGameRule(GameRules.IMMEDIATE_RESPAWN, true);
         this.world.getPersistentDataContainer().set(teamPoints, PersistentDataType.INTEGER_ARRAY, defaultScores);
+        this.world.getPersistentDataContainer().set(worldInGameFlag, PersistentDataType.BOOLEAN, false);
         this.plugin = plugin;
 
         int[] pos = new int[2 * 2];
@@ -83,6 +85,8 @@ public class Game {
     void startGame() {
         state = 1;
         timeSinceLast = 0;
+
+        world.getPersistentDataContainer().set(worldInGameFlag, PersistentDataType.BOOLEAN, true);
 
         int t0 = (int) Math.floor(world.getPlayers().size() / 2.0f);
         int t1 = (int) Math.ceil(world.getPlayers().size() / 2.0f);
@@ -127,12 +131,19 @@ public class Game {
                     ItemUtils.setInventoryStart(player, plugin);
                 });
 
-                Bukkit.unloadWorld(world, false);
-                try {
-                    FileUtils.deleteDirectory(new File(world.getName()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                world.getPersistentDataContainer().set(worldInGameFlag, PersistentDataType.BOOLEAN, false);
+
+                for(int x = -16 * widthChunks / 2; x < 16 * widthChunks / 2; x++)
+                    for(int z = -16 * widthChunks / 2; z < 16 * widthChunks / 2; z++)
+                        for(int y = 0; y < 320; y++) {
+                            Block block = world.getBlockAt(x, y, z);
+                            Material mat = block.getType();
+                            for (Material m : woolColors)
+                                if (m == mat) {
+                                    block.setType(Material.AIR);
+                                    break;
+                                }
+                        }
             }
         }.runTaskLater(plugin, 100L);
         int[] teams = world.getPersistentDataContainer().get(teamPoints, PersistentDataType.INTEGER_ARRAY);

@@ -6,9 +6,9 @@ import org.bukkit.generator.WorldInfo;
 
 import java.util.Random;
 
-public class MapGenerator extends ChunkGenerator {
-    private static final int widthChunks = 4;
+import static com.milkcool.penisBattleMC.Constants.widthChunks;
 
+public class MapGenerator extends ChunkGenerator {
     @Override
     public boolean shouldGenerateNoise() {
         return false;
