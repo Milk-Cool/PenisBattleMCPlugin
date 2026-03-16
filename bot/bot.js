@@ -90,7 +90,7 @@ bot.once("login", async () => {
         const y0 = new Vec3(bot.entity.position.x, 0, bot.entity.position.z);
         const blockAtY0 = bot.blockAt(y0);
         if(blockAtY0 === null) return;
-        if(blockAtY0.name.endsWith("_terracotta")) {
+        if(blockAtY0.name.endsWith("_terracotta") || blockAtY0.name === "sandstone" || blockAtY0.name === "grass_block" || blockAtY0.name === "spruce_planks") {
             // In-game
             const inv = bot.inventory.slots;
             head = inv.find(x => x !== null && x.slot === 5);
