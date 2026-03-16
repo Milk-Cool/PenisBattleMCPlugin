@@ -56,6 +56,12 @@ public class WorldManager {
                     loadStructureFromRes("structures/map_church2.nbt"),
                     loadStructureFromRes("structures/map_church3.nbt"),
             },
+            {
+                    loadStructureFromRes("structures/map_factory0.nbt"),
+                    loadStructureFromRes("structures/map_factory1.nbt"),
+                    loadStructureFromRes("structures/map_factory2.nbt"),
+                    loadStructureFromRes("structures/map_factory3.nbt"),
+            },
     };
 
     public static NamespacedKey[][] getMaps() {

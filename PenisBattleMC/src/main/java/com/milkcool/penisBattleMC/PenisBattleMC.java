@@ -69,7 +69,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
         config.addDefault("msg_item_leave", "Leave game");
         config.addDefault("msg_wait", "Wait 5s and try again");
         config.addDefault("msg_no_games", "No games available right now");
-        config.addDefault("games", 3);
+        config.addDefault("games", 4);
         config.options().copyDefaults(true);
         saveConfig();
 
