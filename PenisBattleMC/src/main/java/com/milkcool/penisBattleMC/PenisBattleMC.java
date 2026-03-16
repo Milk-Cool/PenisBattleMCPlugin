@@ -40,7 +40,7 @@ import static com.milkcool.penisBattleMC.TeamUtils.getTeamWool;
 
 public final class PenisBattleMC extends JavaPlugin implements Listener, CommandExecutor {
     private List<Game> games = new ArrayList<>();
-    private WorldManager worldman = new WorldManager();
+    private WorldManager worldman = new WorldManager(this);
 
     private final Random random = new Random();
 
@@ -286,6 +286,7 @@ public final class PenisBattleMC extends JavaPlugin implements Listener, Command
     private void play(Player player) {
         for(Game game : games) {
             if(game.getState() == 0
+                    && !game.getWorld().getPlayers().isEmpty()
                     && game.getWorld().getPlayers().size() < maxPlayers) {
                 game.addPlayer(player);
                 return;

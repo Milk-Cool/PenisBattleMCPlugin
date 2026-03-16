@@ -18,10 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.milkcool.penisBattleMC.Constants.*;
 import static com.milkcool.penisBattleMC.TeamUtils.getTeamWool;
@@ -108,7 +105,9 @@ public class Game {
     }
 
     void addPlayer(Player player) {
-        Location loc = new Location(world, 0, 1, 0);
+        Random rand = new Random();
+        int t = rand.nextInt(2);
+        Location loc = new Location(world, getX(t), 1, getZ(t));
         player.teleport(loc);
         player.setRespawnLocation(loc, true);
         player.setGameMode(GameMode.SURVIVAL);
@@ -117,6 +116,7 @@ public class Game {
         player.setSaturation(20);
         player.getInventory().clear();
         ItemUtils.setInventoryLeave(player, plugin);
+        player.sendMessage(world.getName());
     }
 
     void endGame() {
