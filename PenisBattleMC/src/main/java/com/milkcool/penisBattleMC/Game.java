@@ -116,7 +116,6 @@ public class Game {
         player.setSaturation(20);
         player.getInventory().clear();
         ItemUtils.setInventoryLeave(player, plugin);
-        player.sendMessage(world.getName());
     }
 
     void endGame() {
