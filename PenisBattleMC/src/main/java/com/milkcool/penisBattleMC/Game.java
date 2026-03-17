@@ -85,6 +85,7 @@ public class Game {
         timeSinceLast = 0;
 
         world.getPersistentDataContainer().set(worldInGameFlag, PersistentDataType.BOOLEAN, true);
+        resetWorldState();
 
         int t0 = (int) Math.floor(world.getPlayers().size() / 2.0f);
         int t1 = (int) Math.ceil(world.getPlayers().size() / 2.0f);
@@ -104,6 +105,13 @@ public class Game {
         }
     }
 
+    void resetWorldState() {
+        world.setTime(6000);
+        world.setStorm(false);
+        world.setThundering(false);
+        world.setClearWeatherDuration(100000);
+    }
+
     void addPlayer(Player player) {
         Random rand = new Random();
         int t = rand.nextInt(2);
@@ -116,6 +124,7 @@ public class Game {
         player.setSaturation(20);
         player.getInventory().clear();
         ItemUtils.setInventoryLeave(player, plugin);
+        resetWorldState();
     }
 
     void endGame() {
